@@ -6,7 +6,7 @@
 #    By: sabra <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/17 17:25:03 by sabra             #+#    #+#              #
-#    Updated: 2020/12/17 18:54:44 by sabra            ###   ########.fr        #
+#    Updated: 2020/12/18 13:48:40 by sabra            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,14 +25,28 @@ ADD https://files.phpmyadmin.net/phpMyAdmin/5.0.2/phpMyAdmin-5.0.2-all-languages
 RUN tar xvzf phpmyadmin.tar.gz && mv phpMyAdmin-5.0.2-all-languages /var/www/html/phpmyadmin
 RUN mv /usr/share/wordpress /var/www/html
 
-# Выдача прав 
+# Создание и дополнение конфигов/ключей для сервера/сайта
+
+COPY ./scrs/create_services.sh ./srcs/init_database.sql /
+COPY ./srcs/default etc/ngingx/sites-available
+COPY ./srcs/autoindex.sh /
+# дополнить два конфига html и wp
+
+# Получение сертификата и ключа ssl для сайта
+
+RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 63 -nodes -verbose -out /etc/ssl/certs/sabra.crt -keyout /etc/ssl/private/sabra.key -subj "/C=RU/ST=Moscow/L=Moscow/O=42 School/OU=sabra/CN=html"
+
+# Выдача прав на управление сервером. -R - флаг рекурсивного присваения прав
 
 RUN chown -R www-data:www-data /var/www/html
 RUN chmod -R 777 /var/www/
+RUN chmod +x create_services.sh
+RUN chmod +x autoindex.sh
 
-# Создание и дополнение конфигов/ключей для сервера/сайта
+# Открываем 80 и 443 порты
 
-COPY ./scrs/create_services.sh ./srcs/initdatabase.sql /
-COPY ./srcs/default etc/ngingx/sites-available
+EXPOSE 80 443
 
+RUN service mysql start && mysql < init_database.sql
 
+ENTRYPOINT bash create_services.sh
