@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: sabra <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/12/17 17:25:03 by sabra             #+#    #+#              #
-#    Updated: 2020/12/18 13:48:40 by sabra            ###   ########.fr        #
+#    Created: 2020/12/19 12:44:55 by sabra             #+#    #+#              #
+#    Updated: 2020/12/19 15:24:09 by sabra            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ FROM debian:buster
 
 RUN apt-get -y update && apt-get -y upgrade
 RUN apt-get -y install nginx default-mysql-server php7.3-fpm \
-php7.3-mysql php-mbstring openssl vim
+php7.3-mysql wordpress php-mbstring openssl vim 
 
 # Скачивание и установка дополнительных пакетов для phpmyadmin
 
@@ -24,13 +24,13 @@ ADD https://files.phpmyadmin.net/phpMyAdmin/5.0.2/phpMyAdmin-5.0.2-all-languages
 
 RUN tar xvzf phpmyadmin.tar.gz && mv phpMyAdmin-5.0.2-all-languages /var/www/html/phpmyadmin
 RUN mv /usr/share/wordpress /var/www/html
-
 # Создание и дополнение конфигов/ключей для сервера/сайта
 
-COPY ./scrs/create_services.sh ./srcs/init_database.sql /
+COPY ./scrs/create_services.sh ./srcs/autoindex.sh /
 COPY ./srcs/default etc/ngingx/sites-available
-COPY ./srcs/autoindex.sh /
-# дополнить два конфига html и wp
+COPY ./srcs/init_database.sql /var/
+COPY ./srcs/config.inc.php /var/www/html/phpmyadmin/
+COPY ./srcs/wp-config.php /var/www/html/wordpress/ 
 
 # Получение сертификата и ключа ssl для сайта
 
