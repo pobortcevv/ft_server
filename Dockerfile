@@ -6,7 +6,7 @@
 #    By: sabra <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/19 12:44:55 by sabra             #+#    #+#              #
-#    Updated: 2020/12/19 15:24:09 by sabra            ###   ########.fr        #
+#    Updated: 2020/12/21 22:29:44 by sabra            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ RUN mv /usr/share/wordpress /var/www/html
 # Создание и дополнение конфигов/ключей для сервера/сайта
 
 COPY ./scrs/create_services.sh ./srcs/autoindex.sh /
-COPY ./srcs/default etc/ngingx/sites-available
+COPY ./srcs/default /etc/nginx/sites-available/
 COPY ./srcs/init_database.sql /var/
 COPY ./srcs/config.inc.php /var/www/html/phpmyadmin/
 COPY ./srcs/wp-config.php /var/www/html/wordpress/ 

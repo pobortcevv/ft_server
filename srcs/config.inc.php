@@ -41,7 +41,7 @@ $cfg['Servers'][$i]['AllowNoPassword'] = false;
 // $cfg['Servers'][$i]['controlhost'] = '';
 // $cfg['Servers'][$i]['controlport'] = '';
 $cfg['Servers'][$i]['controluser'] = 'sabra';
-$cfg['Servers'][$i]['controlpass'] = 'pmapass';
+$cfg['Servers'][$i]['controlpass'] = 'sabra_21';
 
 /* Storage database and tables */
 // $cfg['Servers'][$i]['pmadb'] = 'phpmyadmin';
