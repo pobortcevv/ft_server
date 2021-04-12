@@ -6,7 +6,7 @@
 #    By: sabra <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/19 12:44:55 by sabra             #+#    #+#              #
-#    Updated: 2020/12/21 22:29:44 by sabra            ###   ########.fr        #
+#    Updated: 2021/04/11 10:22:48 by sabra            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ RUN tar xvzf phpmyadmin.tar.gz && mv phpMyAdmin-5.0.2-all-languages /var/www/htm
 RUN mv /usr/share/wordpress /var/www/html
 # Создание и дополнение конфигов/ключей для сервера/сайта
 
-COPY ./scrs/create_services.sh ./srcs/autoindex.sh /
+COPY ./srcs/create_services.sh ./srcs/autoindex.sh /
 COPY ./srcs/default /etc/nginx/sites-available/
 COPY ./srcs/init_database.sql /var/
 COPY ./srcs/config.inc.php /var/www/html/phpmyadmin/
@@ -47,6 +47,6 @@ RUN chmod +x autoindex.sh
 
 EXPOSE 80 443
 
-RUN service mysql start && mysql < init_database.sql
+RUN service mysql start && mysql < /var/init_database.sql
 
 ENTRYPOINT bash create_services.sh
